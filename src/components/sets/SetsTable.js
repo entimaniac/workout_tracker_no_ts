@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
-import {IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import React from 'react';
+import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import {AppContext} from "../../context/AppContext";
+import {Set} from "./Set";
 
-export const SetsTable = ({sets, addSet}) => {
+export const SetsTable = ({row}) => {
+    const {addSet} = React.useContext(AppContext);
 
     return (
         <>
@@ -11,22 +14,21 @@ export const SetsTable = ({sets, addSet}) => {
                 <TableCell colSpan={4}>
                     <TableContainer>
                         <Table sx={{minWidth: 650}}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Reps</TableCell>
+                                    <TableCell>Weight</TableCell>
+                                </TableRow>
+                            </TableHead>
                             <TableBody>
-                                {sets.map((row, index) => (
-                                    <TableRow
-                                        key={index}
-                                        sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                    >
-                                        <TableCell>set: {"" + (index + 1)}</TableCell>
-                                        <TableCell>{row}</TableCell>
-
-                                    </TableRow>
-                                ))}
+                                {row?.sets?.map(set =>
+                                    <Set key={set.id} set={set} rowId={row.id}/>
+                                )}
                                 <TableRow
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
                                     <TableCell colSpan={5} align={"center"}>
-                                        <IconButton onClick={addSet}>
+                                        <IconButton onClick={() => addSet(row.id)}>
                                             <AddIcon/>
                                         </IconButton>
                                     </TableCell>
