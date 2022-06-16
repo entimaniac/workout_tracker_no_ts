@@ -6,6 +6,7 @@ import {Set} from "./Set";
 
 export const SetsTable = ({row}) => {
     const {addSet} = React.useContext(AppContext);
+    const setList = row?.sets?.setList;
 
     return (
         <>
@@ -21,9 +22,9 @@ export const SetsTable = ({row}) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {row?.sets?.map(set =>
-                                    <Set key={set.id} set={set} rowId={row.id}/>
-                                )}
+                                {Object.values(setList).map((s) => (
+                                    <Set key={s.id} set={s} rowId={row.id}/>
+                                ))}
                                 <TableRow
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >

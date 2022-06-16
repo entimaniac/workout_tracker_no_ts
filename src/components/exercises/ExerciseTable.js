@@ -7,6 +7,7 @@ import {Exercise} from "./Exercise";
 
 export const ExerciseTable = () => {
     const {appData, addExercise} = React.useContext(AppContext);
+    const exList = appData?.exercises?.exerciseList;
 
     return (
         <>
@@ -21,10 +22,10 @@ export const ExerciseTable = () => {
                     </TableHead>
                     <TableBody>
 
-                        {appData?.exercises?.map((row) => (
-                            <Fragment key={row.id}>
-                                <Exercise exercise={row} />
-                                <SetsTable row={row}/>
+                        {Object.values(exList).map((ex) => (
+                            <Fragment key={ex.id}>
+                                <Exercise exercise={ex} />
+                                <SetsTable row={ex}/>
                             </Fragment>
                         ))}
 

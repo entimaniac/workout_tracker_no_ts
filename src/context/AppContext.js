@@ -5,15 +5,18 @@ import produce from "immer"
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
-    const initialState = {exercises: []}
+    const initialState = {exercises: {exerciseList: {}}}
     const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
+
+    // save/load state methods here
 
     const generateId = () => {
         return uuidv4();
     }
 
     const createNewExercise = () => {
-        return {id: generateId(), name: "New Exercise", sets: [createNewSet()]}
+        let set = createNewSet();
+        return {id: generateId(), name: "New Exercise", sets: {setList: {[set.id]: set}}}
     }
 
     const createNewSet = () => {
@@ -23,7 +26,16 @@ export const AppContextProvider = (props) => {
     const addExercise = () => {
         setAppData(
             produce((draft) => {
-                draft.exercises.push(createNewExercise())
+                let e = createNewExercise();
+                draft.exercises.exerciseList[e.id] = e
+            })
+        )
+    }
+
+    const deleteExercise = (exerciseId) => {
+        setAppData(
+            produce((draft) => {
+                delete draft.exercises.exerciseList[exerciseId];
             })
         )
     }
@@ -31,31 +43,41 @@ export const AppContextProvider = (props) => {
     const updateExercise = (exerciseId, field, value) => {
         setAppData(
             produce((draft) => {
-                draft.exercises.find((exercise) => exercise.id === exerciseId)[field] = value;
+                draft.exercises.exerciseList[exerciseId][field] = value;
             })
         )
     }
 
-    const addSet = (id) => {
+    const addSet = (exerciseId) => {
         setAppData(
             produce((draft) => {
-                const exercise = draft.exercises.find((exercise) => exercise.id === id).sets.push(createNewSet());
+                let set = createNewSet();
+                draft.exercises.exerciseList[exerciseId].sets.setList[set.id] = set
             })
         )
 
+    }
+
+    const deleteSet = (exerciseId, setId) => {
+        setAppData(
+            produce((draft) => {
+                delete draft.exercises.exerciseList[exerciseId].sets.setList[setId];
+            })
+        )
     }
 
     const updateSet = (exerciseId, setId, field, value) => {
         setAppData(
             produce((draft) => {
-                const exercise = draft.exercises.find((exercise) => exercise.id === exerciseId);
-                exercise.sets.find((set) => set.id === setId)[field] = value;
+                draft.exercises.exerciseList[exerciseId].sets.setList[setId][field] = value
             })
         )
     }
 
     const contextValue = {
-        appData, setAppData, generateId, addExercise, updateExercise, addSet, updateSet
+        appData, setAppData, generateId,
+        addExercise, deleteExercise, updateExercise,
+        addSet, deleteSet, updateSet
     }
 
     return (

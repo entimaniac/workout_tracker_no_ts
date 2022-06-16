@@ -1,9 +1,10 @@
 import React from 'react';
-import {TableCell, TableRow, TextField} from "@mui/material";
+import {IconButton, TableCell, TableRow, TextField} from "@mui/material";
 import {AppContext} from "../../context/AppContext";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const Set = ({rowId, set}) => {
-    const {updateSet} = React.useContext(AppContext);
+    const {updateSet, deleteSet} = React.useContext(AppContext);
 
     const updateReps = (event) => {
         updateSet(rowId, set.id, "reps", event.target.value)
@@ -11,6 +12,10 @@ export const Set = ({rowId, set}) => {
 
     const updateWeight = (event) => {
         updateSet(rowId, set.id, "weight", event.target.value)
+    };
+
+    const handleDelete = () => {
+        deleteSet(rowId, set.id)
     };
 
     return (
@@ -21,6 +26,11 @@ export const Set = ({rowId, set}) => {
                 </TableCell>
                 <TableCell>
                     <TextField value={set.weight} variant="standard" type={"number"} onChange={updateWeight}/>
+                </TableCell>
+                <TableCell>
+                    <IconButton onClick={handleDelete}>
+                        <DeleteIcon fontSize={"small"}/>
+                    </IconButton>
                 </TableCell>
             </TableRow>
         </>
