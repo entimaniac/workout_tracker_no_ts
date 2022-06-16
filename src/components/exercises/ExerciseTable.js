@@ -8,7 +8,7 @@ import {Exercise} from "./Exercise";
 export const ExerciseTable = () => {
     const {appData, addExercise} = React.useContext(AppContext);
     const exList = appData?.exercises?.exerciseList;
-
+    //comment
     return (
         <>
             <TableContainer>
