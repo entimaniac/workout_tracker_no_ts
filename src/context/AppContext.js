@@ -6,6 +6,8 @@ export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
     const initialState = {exercises: {exerciseList: {}}}
+    // const initialState = {workouts: {workoutList: {exercises: {exerciseList: {}}}}}
+
     const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
 
     // save/load state methods here
