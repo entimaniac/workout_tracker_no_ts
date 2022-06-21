@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment} from 'react';
 import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {SetsTable} from "../sets/SetsTable";
@@ -7,11 +7,7 @@ import {Exercise} from "./Exercise";
 
 export const ExerciseTable = () => {
     const {appData, addExercise} = React.useContext(AppContext);
-    let exerciseList = appData.activeWorkout.exercises.exerciseList;
-    useEffect(() => {
-        console.log("hello")
-        exerciseList = appData?.activeWorkout?.exercises?.exerciseList
-    }, [appData?.activeWorkout])
+    let exerciseList = appData?.activeWorkout?.exercises?.exerciseList || {};
     return (
         <>
             <TableContainer>
@@ -24,9 +20,9 @@ export const ExerciseTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Object.values(appData?.activeWorkout?.exercises?.exerciseList)?.map((exercise) => (
+                        {Object.values(exerciseList)?.map((exercise) => (
                             <Fragment key={exercise.id}>
-                                <Exercise exercise={exercise} />
+                                <Exercise exercise={exercise}/>
                                 <SetsTable exercise={exercise}/>
                             </Fragment>
                         ))}

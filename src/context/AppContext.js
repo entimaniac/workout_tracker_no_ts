@@ -1,40 +1,10 @@
 import React, {createContext, useState} from "react";
-import {v4 as uuidv4} from 'uuid';
 import produce from "immer"
+import {createNewExercise, createNewSet, createNewWorkout, initialState} from "./ContextUtils";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
-
-    const generateId = () => {
-        return uuidv4();
-    }
-
-    // save/load state methods here
-
-
-    const createNewWorkout = () => {
-        let exercise = createNewExercise();
-        return {id: generateId(), name: "New Workout", exercises: {exerciseList: {[exercise.id]: exercise}}}
-    }
-
-    const createNewExercise = () => {
-        let set = createNewSet();
-        return {id: generateId(), name: "New Exercise", sets: {setList: {[set.id]: set}}}
-    }
-
-    const createNewSet = () => {
-        return {id: generateId(), reps: 10, weight: 45}
-    }
-
-    const initialState = () => {
-        let workout = createNewWorkout()
-        return {
-            workouts: {workoutList: {[workout.id]: workout}},
-            activeWorkout: workout
-        }
-    }
-
     const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
 
     const setActiveWorkout = (workoutId) => {
@@ -43,7 +13,7 @@ export const AppContextProvider = (props) => {
                 // save state of active workout into the workout lists (pass by reference doesn't seem to work, or more
                 // probably it's not the 'react' way, and we are modifying state incorrectly and nothing
                 // is saving/re-rendering..
-                draft.workouts.workoutList[draft.activeWorkout.id] = draft.activeWorkout;
+                draft.workouts.workoutList[draft.activeWorkout.id] = appData.activeWorkout;
                 draft.activeWorkout = draft.workouts.workoutList[workoutId];
             })
         )
@@ -52,9 +22,10 @@ export const AppContextProvider = (props) => {
     const addWorkout = () => {
         setAppData(
             produce((draft) => {
-                let e = createNewWorkout();
-                draft.workouts.workoutList[e.id] = e;
-                draft.activeWorkout = e;
+                let workout = createNewWorkout();
+                draft.workouts.workoutList[workout.id] = workout
+                draft.workouts.workoutList[draft.activeWorkout.id] = appData.activeWorkout;
+                draft.activeWorkout = workout;
             })
         )
     }
@@ -92,7 +63,7 @@ export const AppContextProvider = (props) => {
         )
     }
 
-    const updateExercise = (workoutId, exerciseId, field, value) => {
+    const updateExercise = (exerciseId, field, value) => {
         setAppData(
             produce((draft) => {
                 draft.activeWorkout.exercises.exerciseList[exerciseId][field] = value;
@@ -127,7 +98,7 @@ export const AppContextProvider = (props) => {
     }
 
     const contextValue = {
-        appData, setAppData, generateId,
+        appData, setAppData,
         setActiveWorkout, addWorkout, deleteWorkout, updateWorkout,
         addExercise, deleteExercise, updateExercise,
         addSet, deleteSet, updateSet
