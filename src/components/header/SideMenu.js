@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import {Divider} from "@mui/material";
+import {Divider, IconButton} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import {WorkoutList} from "../workouts/WorkoutList";
 
 export const SideMenu = () => {
     const [open, setOpen] = React.useState(false);
@@ -16,26 +17,30 @@ export const SideMenu = () => {
 
     return (
         <>
-            <Button onClick={() => toggleOpen()}>menu</Button>
+            <IconButton onClick={() => toggleOpen()}>
+                <MenuIcon/>
+            </IconButton>
             <Drawer
                 open={open}
                 onClose={toggleOpen}
             >
                 <List>
-                    <ListItem >
+                    <ListItem>
                         <ListItemText primary={"Hii"}/>
                     </ListItem>
-                    <Divider />
-                    <ListItem disablePadding>
+                    <Divider/>
+                    <ListItem>
                         <ListItemButton>
-                            <ListItemText primary={"previous workouts\n"}/>
+                            <ListItemText primary={"Calendar"}/>
                         </ListItemButton>
                     </ListItem>
-                    <ListItem disablePadding>
+                    <ListItem>
                         <ListItemButton>
-                            <ListItemText primary={"previous workouts\n"}/>
+                            <ListItemText primary={"Previous Workouts"}/>
                         </ListItemButton>
                     </ListItem>
+                    <Divider/>
+                    <WorkoutList/>
                 </List>
 
 

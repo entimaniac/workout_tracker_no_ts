@@ -9,12 +9,6 @@ export const AppContextProvider = (props) => {
     const generateId = () => {
         return uuidv4();
     }
-    const initialState = {
-        workouts: {},
-        activeWorkout: {id: generateId(), exercises: {exerciseList: {}}}
-    }
-
-    const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
 
     // save/load state methods here
 
@@ -33,11 +27,34 @@ export const AppContextProvider = (props) => {
         return {id: generateId(), reps: 10, weight: 45}
     }
 
+    const initialState = () => {
+        let workout = createNewWorkout()
+        return {
+            workouts: {workoutList: {[workout.id]: workout}},
+            activeWorkout: workout
+        }
+    }
+
+    const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
+
+    const setActiveWorkout = (workoutId) => {
+        setAppData(
+            produce((draft) => {
+                // save state of active workout into the workout lists (pass by reference doesn't seem to work, or more
+                // probably it's not the 'react' way, and we are modifying state incorrectly and nothing
+                // is saving/re-rendering..
+                draft.workouts.workoutList[draft.activeWorkout.id] = draft.activeWorkout;
+                draft.activeWorkout = draft.workouts.workoutList[workoutId];
+            })
+        )
+    }
+
     const addWorkout = () => {
         setAppData(
             produce((draft) => {
                 let e = createNewWorkout();
-                draft.workouts.workoutList[e.id] = e
+                draft.workouts.workoutList[e.id] = e;
+                draft.activeWorkout = e;
             })
         )
     }
@@ -50,7 +67,7 @@ export const AppContextProvider = (props) => {
         )
     }
 
-    const updateWorkouts = (workoutId, field, value) => {
+    const updateWorkout = (workoutId, field, value) => {
         setAppData(
             produce((draft) => {
                 draft.workouts.workoutList[workoutId][field] = value;
@@ -111,6 +128,7 @@ export const AppContextProvider = (props) => {
 
     const contextValue = {
         appData, setAppData, generateId,
+        setActiveWorkout, addWorkout, deleteWorkout, updateWorkout,
         addExercise, deleteExercise, updateExercise,
         addSet, deleteSet, updateSet
     }
