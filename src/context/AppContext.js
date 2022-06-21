@@ -5,15 +5,23 @@ import produce from "immer"
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
-    const initialState = {exercises: {exerciseList: {}}}
-    // const initialState = {workouts: {workoutList: {exercises: {exerciseList: {}}}}}
+
+    const generateId = () => {
+        return uuidv4();
+    }
+    const initialState = {
+        workouts: {},
+        activeWorkout: {id: generateId(), exercises: {exerciseList: {}}}
+    }
 
     const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
 
     // save/load state methods here
 
-    const generateId = () => {
-        return uuidv4();
+
+    const createNewWorkout = () => {
+        let exercise = createNewExercise();
+        return {id: generateId(), name: "New Workout", exercises: {exerciseList: {[exercise.id]: exercise}}}
     }
 
     const createNewExercise = () => {
@@ -25,11 +33,36 @@ export const AppContextProvider = (props) => {
         return {id: generateId(), reps: 10, weight: 45}
     }
 
+    const addWorkout = () => {
+        setAppData(
+            produce((draft) => {
+                let e = createNewWorkout();
+                draft.workouts.workoutList[e.id] = e
+            })
+        )
+    }
+
+    const deleteWorkout = (workoutId) => {
+        setAppData(
+            produce((draft) => {
+                delete draft.workouts.workoutList[workoutId];
+            })
+        )
+    }
+
+    const updateWorkouts = (workoutId, field, value) => {
+        setAppData(
+            produce((draft) => {
+                draft.workouts.workoutList[workoutId][field] = value;
+            })
+        )
+    }
+
     const addExercise = () => {
         setAppData(
             produce((draft) => {
                 let e = createNewExercise();
-                draft.exercises.exerciseList[e.id] = e
+                draft.activeWorkout.exercises.exerciseList[e.id] = e
             })
         )
     }
@@ -37,15 +70,15 @@ export const AppContextProvider = (props) => {
     const deleteExercise = (exerciseId) => {
         setAppData(
             produce((draft) => {
-                delete draft.exercises.exerciseList[exerciseId];
+                delete draft.activeWorkout.exercises.exerciseList[exerciseId];
             })
         )
     }
 
-    const updateExercise = (exerciseId, field, value) => {
+    const updateExercise = (workoutId, exerciseId, field, value) => {
         setAppData(
             produce((draft) => {
-                draft.exercises.exerciseList[exerciseId][field] = value;
+                draft.activeWorkout.exercises.exerciseList[exerciseId][field] = value;
             })
         )
     }
@@ -54,7 +87,7 @@ export const AppContextProvider = (props) => {
         setAppData(
             produce((draft) => {
                 let set = createNewSet();
-                draft.exercises.exerciseList[exerciseId].sets.setList[set.id] = set
+                draft.activeWorkout.exercises.exerciseList[exerciseId].sets.setList[set.id] = set
             })
         )
 
@@ -63,7 +96,7 @@ export const AppContextProvider = (props) => {
     const deleteSet = (exerciseId, setId) => {
         setAppData(
             produce((draft) => {
-                delete draft.exercises.exerciseList[exerciseId].sets.setList[setId];
+                delete draft.activeWorkout.exercises.exerciseList[exerciseId].sets.setList[setId];
             })
         )
     }
@@ -71,7 +104,7 @@ export const AppContextProvider = (props) => {
     const updateSet = (exerciseId, setId, field, value) => {
         setAppData(
             produce((draft) => {
-                draft.exercises.exerciseList[exerciseId].sets.setList[setId][field] = value
+                draft.activeWorkout.exercises.exerciseList[exerciseId].sets.setList[setId][field] = value
             })
         )
     }

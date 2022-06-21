@@ -4,9 +4,9 @@ import AddIcon from '@mui/icons-material/Add';
 import {AppContext} from "../../context/AppContext";
 import {Set} from "./Set";
 
-export const SetsTable = ({row}) => {
+export const SetsTable = ({exercise}) => {
     const {addSet} = React.useContext(AppContext);
-    const setList = row?.sets?.setList;
+    const setList = exercise?.sets?.setList;
 
     return (
         <>
@@ -23,13 +23,13 @@ export const SetsTable = ({row}) => {
                             </TableHead>
                             <TableBody>
                                 {Object.values(setList).map((s) => (
-                                    <Set key={s.id} set={s} rowId={row.id}/>
+                                    <Set key={s.id} set={s} rowId={exercise.id}/>
                                 ))}
                                 <TableRow
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
                                     <TableCell colSpan={5} align={"center"}>
-                                        <IconButton onClick={() => addSet(row.id)}>
+                                        <IconButton onClick={() => addSet(exercise.id)}>
                                             <AddIcon/>
                                         </IconButton>
                                     </TableCell>

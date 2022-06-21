@@ -7,8 +7,7 @@ import {Exercise} from "./Exercise";
 
 export const ExerciseTable = () => {
     const {appData, addExercise} = React.useContext(AppContext);
-    const exList = appData?.exercises?.exerciseList;
-    //comment
+    const exerciseList = appData.activeWorkout?.exercises?.exerciseList;
     return (
         <>
             <TableContainer>
@@ -21,15 +20,12 @@ export const ExerciseTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
-                        {Object.values(exList).map((ex) => (
-                            <Fragment key={ex.id}>
-                                <Exercise exercise={ex} />
-                                <SetsTable row={ex}/>
+                        {Object.values(exerciseList)?.map((exercise) => (
+                            <Fragment key={exercise.id}>
+                                <Exercise exercise={exercise} />
+                                <SetsTable exercise={exercise}/>
                             </Fragment>
                         ))}
-
-
                         <TableRow
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
