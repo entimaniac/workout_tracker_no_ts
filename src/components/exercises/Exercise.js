@@ -15,11 +15,11 @@ export const Exercise = ({exercise}) => {
     };
 
     const calculateTotalReps = (sets) => {
-        return Object.values(sets.setList).reduce((sum, item) => parseInt(sum) + parseInt(item.reps), 0)
+        return Object.values(sets.setList).reduce((sum, item) => parseInt(sum) + parseInt(item.reps) || 0, 0)
     }
 
     const calculateTotalWeight = (sets) => {
-        return Object.values(sets.setList).reduce((sum, item) => parseInt(sum) + (parseInt(item.reps) * parseInt(item.weight)), 0)
+        return Object.values(sets.setList).reduce((sum, item) => parseInt(sum) + (parseInt(item.reps) * parseInt(item.weight)) || 0, 0)
     }
 
     return (

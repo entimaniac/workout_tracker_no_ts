@@ -1,11 +1,20 @@
-import React, {createContext, useState} from "react";
+import React, {createContext, useEffect, useState} from "react";
 import produce from "immer"
 import {createNewExercise, createNewSet, createNewWorkout, initialState} from "./ContextUtils";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
-    const [appData, setAppData] = useState(localStorage.getItem("appData") || initialState);
+    const [appData, setAppData] = useState(JSON.parse(localStorage.getItem("appData")) || initialState);
+
+    const saveState = () => {
+        localStorage.setItem("appData", JSON.stringify(appData));
+    }
+
+    useEffect(() => {
+        saveState()
+    }, [appData]);
+
 
     const setActiveWorkout = (workoutId) => {
         setAppData(
