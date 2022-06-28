@@ -6,16 +6,26 @@ export const generateId = () => {
 
 export const createNewWorkout = () => {
     let exercise = createNewExercise();
-    return {id: generateId(), name: "New Workout", exercises: {exerciseList: {[exercise.id]: exercise}}}
+    return {
+        id: generateId(),
+        name: "New Workout",
+        dateCreated: new Date(),
+        exercises: {exerciseList: {[exercise.id]: exercise}}
+    }
 }
 
 export const createNewExercise = () => {
     let set = createNewSet();
-    return {id: generateId(), name: "New Exercise", sets: {setList: {[set.id]: set}}}
+    return {
+        id: generateId(),
+        name: "New Exercise",
+        dateCreated: new Date(),
+        sets: {setList: {[set.id]: set}}
+    }
 }
 
 export const createNewSet = () => {
-    return {id: generateId(), reps: 10, weight: 45}
+    return {id: generateId(), reps: 10, weight: 45, dateCreated: new Date()}
 }
 
 export const initialState = () => {
