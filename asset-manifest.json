@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/workout_tracker_not_ts/static/js/main.da134c30.js",
-    "index.html": "/workout_tracker_not_ts/index.html",
-    "main.da134c30.js.map": "/workout_tracker_not_ts/static/js/main.da134c30.js.map"
+    "main.js": "/workout_tracker_no_ts/static/js/main.da134c30.js",
+    "index.html": "/workout_tracker_no_ts/index.html",
+    "main.da134c30.js.map": "/workout_tracker_no_ts/static/js/main.da134c30.js.map"
   },
   "entrypoints": [
     "static/js/main.da134c30.js"
