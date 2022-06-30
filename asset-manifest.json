@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/workout_tracker_no_ts/static/js/main.700027af.js",
+    "main.js": "/workout_tracker_no_ts/static/js/main.32a09aee.js",
     "index.html": "/workout_tracker_no_ts/index.html",
-    "main.700027af.js.map": "/workout_tracker_no_ts/static/js/main.700027af.js.map"
+    "main.32a09aee.js.map": "/workout_tracker_no_ts/static/js/main.32a09aee.js.map"
   },
   "entrypoints": [
-    "static/js/main.700027af.js"
+    "static/js/main.32a09aee.js"
   ]
 }
