@@ -13,7 +13,7 @@ export const WorkoutList = () => {
             {Object.values(workoutList)?.map((workout) => (
                 <ListItem key={workout.id}>
                     <ListItemButton onClick={() => setActiveWorkout(workout.id)}>
-                        <ListItemText primary={workout.id}/>
+                        <ListItemText primary={workout.name}/>
                     </ListItemButton>
                 </ListItem>
             ))}

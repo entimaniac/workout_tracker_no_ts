@@ -55,6 +55,15 @@ export const AppContextProvider = (props) => {
         )
     }
 
+    const updateActiveWorkout = (field, value) => {
+        setAppData(
+            produce((draft) => {
+                draft.activeWorkout[field] = value;
+            })
+        )
+        updateWorkout(appData.activeWorkout.id, field, value);
+    }
+
     const addExercise = () => {
         setAppData(
             produce((draft) => {
@@ -108,7 +117,7 @@ export const AppContextProvider = (props) => {
 
     const contextValue = {
         appData, setAppData,
-        setActiveWorkout, addWorkout, deleteWorkout, updateWorkout,
+        setActiveWorkout, addWorkout, deleteWorkout, updateWorkout, updateActiveWorkout,
         addExercise, deleteExercise, updateExercise,
         addSet, deleteSet, updateSet
     }

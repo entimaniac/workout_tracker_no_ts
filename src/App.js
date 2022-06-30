@@ -9,6 +9,28 @@ function App() {
         palette: {
             mode: 'dark',
         },
+        components: {
+            MuiButton: {
+                defaultProps: {
+                    size: 'small',
+                },
+            },
+            MuiIconButton: {
+                defaultProps: {
+                    size: 'small',
+                },
+            },
+            MuiListItem: {
+                defaultProps: {
+                    dense: true,
+                },
+            },
+            MuiTable: {
+                defaultProps: {
+                    size: 'small',
+                },
+            },
+        }
     });
     return (
         <>

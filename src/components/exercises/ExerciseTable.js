@@ -1,15 +1,20 @@
 import React, {Fragment} from 'react';
-import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {SetsTable} from "../sets/SetsTable";
 import {AppContext} from "../../context/AppContext";
 import {Exercise} from "./Exercise";
 
 export const ExerciseTable = () => {
-    const {appData, addExercise} = React.useContext(AppContext);
+    const {appData, addExercise, updateActiveWorkout} = React.useContext(AppContext);
+    const updateWorkoutName = (e) => {
+        updateActiveWorkout("name",  e.target.value)
+    }
     let exerciseList = appData?.activeWorkout?.exercises?.exerciseList || {};
     return (
         <>
+            <TextField value={appData.activeWorkout.name} variant="standard" onChange={updateWorkoutName}/>
+
             <TableContainer>
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
