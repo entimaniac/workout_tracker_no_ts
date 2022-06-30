@@ -1,8 +1,9 @@
 import React from 'react';
-import {ExerciseTable} from "./components/exercises/ExerciseTable";
 import {Clock} from "./components/Clock";
 import {Container, createTheme, CssBaseline, Divider, ThemeProvider} from "@mui/material";
 import {MenuBar} from "./components/header/MenuBar";
+import {WorkoutLayout} from "./layout/WorkoutLayout";
+import {Footer} from "./components/footer/Footer";
 
 function App() {
     const darkTheme = createTheme({
@@ -30,6 +31,12 @@ function App() {
                     size: 'small',
                 },
             },
+            MuiTableRow: {
+                hover: true,
+                defaultProps: {
+                    hover: true
+                }
+            },
         }
     });
     return (
@@ -40,7 +47,8 @@ function App() {
                     <MenuBar/>
                     <Clock/>
                     <Divider/>
-                    <ExerciseTable/>
+                    <WorkoutLayout/>
+                    <Footer/>
                 </Container>
             </ThemeProvider>
         </>
