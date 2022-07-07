@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Grid, Typography} from "@mui/material";
-import {getColor} from "./clock/ClockUtils";
+import {getColor} from "./ClockUtils";
 
 export const Clock = () => {
     const [time, setTime] = useState(new Date());

@@ -1,7 +1,7 @@
 import React from 'react';
-import {IconButton, TableCell, TableRow, TextField} from "@mui/material";
+import {TableCell, TableRow, TextField} from "@mui/material";
 import {AppContext} from "../../context/AppContext";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {DeleteConfirm} from "../shared/input/DeleteConfirm";
 
 export const Exercise = ({exercise}) => {
     const {updateExercise, deleteExercise} = React.useContext(AppContext);
@@ -31,9 +31,7 @@ export const Exercise = ({exercise}) => {
                 <TableCell>{calculateTotalReps(exercise.sets)}</TableCell>
                 <TableCell>{calculateTotalWeight(exercise.sets)}</TableCell>
                 <TableCell>
-                    <IconButton onClick={handleDelete}>
-                        <DeleteIcon fontSize={"small"}/>
-                    </IconButton>
+                    <DeleteConfirm onClick={handleDelete}/>
                 </TableCell>
             </TableRow>
         </>

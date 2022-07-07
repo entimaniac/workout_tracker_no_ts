@@ -1,5 +1,5 @@
 import React from 'react';
-import {Clock} from "./components/Clock";
+import {Clock} from "./components/clock/Clock";
 import {Container, createTheme, CssBaseline, Divider, ThemeProvider} from "@mui/material";
 import {MenuBar} from "./components/header/MenuBar";
 import {WorkoutLayout} from "./layout/WorkoutLayout";

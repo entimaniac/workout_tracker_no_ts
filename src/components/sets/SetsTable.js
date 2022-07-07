@@ -11,19 +11,26 @@ export const SetsTable = ({exercise}) => {
     return (
         <>
             <TableRow>
-                <TableCell> </TableCell>
                 <TableCell colSpan={4}>
                     <TableContainer>
-                        <Table sx={{minWidth: 650}}>
+                        <Table sx={{minWidth: 650, backgroundColor:"action.hover"}}>
+                            <colgroup>
+                                <col style={{width:'10%'}}/>
+                                <col style={{width:'20%'}}/>
+                                <col style={{width:'20%'}}/>
+                                <col style={{width:'10%'}}/>
+                            </colgroup>
                             <TableHead>
                                 <TableRow>
+                                    <TableCell> </TableCell>
                                     <TableCell>Reps</TableCell>
                                     <TableCell>Weight</TableCell>
+                                    <TableCell> </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {Object.values(setList).map((s) => (
-                                    <Set key={s.id} set={s} rowId={exercise.id}/>
+                                {Object.values(setList).map((s, index) => (
+                                    <Set key={index} set={s} rowId={exercise.id} />
                                 ))}
                                 <TableRow
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}

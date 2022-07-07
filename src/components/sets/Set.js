@@ -1,7 +1,7 @@
 import React from 'react';
-import {IconButton, TableCell, TableRow, TextField} from "@mui/material";
+import {TableCell, TableRow, TextField} from "@mui/material";
 import {AppContext} from "../../context/AppContext";
-import DeleteIcon from "@mui/icons-material/Delete";
+import {DeleteConfirm} from "../shared/input/DeleteConfirm";
 
 export const Set = ({rowId, set}) => {
     const {updateSet, deleteSet} = React.useContext(AppContext);
@@ -21,6 +21,7 @@ export const Set = ({rowId, set}) => {
     return (
         <>
             <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                <TableCell> </TableCell>
                 <TableCell>
                     <TextField value={set.reps} variant="standard" type={"number"} onChange={updateReps}/>
                 </TableCell>
@@ -28,9 +29,7 @@ export const Set = ({rowId, set}) => {
                     <TextField value={set.weight} variant="standard" type={"number"} onChange={updateWeight}/>
                 </TableCell>
                 <TableCell>
-                    <IconButton onClick={handleDelete}>
-                        <DeleteIcon fontSize={"small"}/>
-                    </IconButton>
+                    <DeleteConfirm onClick={handleDelete}/>
                 </TableCell>
             </TableRow>
         </>
