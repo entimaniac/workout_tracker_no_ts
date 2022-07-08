@@ -6,11 +6,12 @@ import {AppContext} from "../../context/AppContext";
 import {DeleteConfirm} from "../shared/input/DeleteConfirm";
 
 export const WorkoutList = () => {
-    const {appData, setActiveWorkout} = React.useContext(AppContext);
-    const workoutList = appData?.workouts?.workoutList;
-    const handleDelete = () => {
-        console.log("add functionality here plz")
+    const {workoutList, deleteWorkout, setActiveWorkout} = React.useContext(AppContext);
+
+    const handleDelete = (workoutId) => {
+        deleteWorkout(workoutId)
     };
+
     return (
         <>
             {Object.values(workoutList)?.map((workout) => (
@@ -18,7 +19,7 @@ export const WorkoutList = () => {
                     <ListItemButton onClick={() => setActiveWorkout(workout.id)}>
                         <ListItemText primary={workout.name}/>
                     </ListItemButton>
-                    <DeleteConfirm onClick={handleDelete}/>
+                    <DeleteConfirm onClick={() => handleDelete(workout.id)}/>
                 </ListItem>
             ))}
         </>

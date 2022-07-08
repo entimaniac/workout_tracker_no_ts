@@ -32,7 +32,7 @@ export const initialState = () => {
     let workout = createNewWorkout()
     return {
         workouts: {workoutList: {[workout.id]: workout}},
-        activeWorkout: workout
+        activeWorkoutId: workout.id
     }
 }
 

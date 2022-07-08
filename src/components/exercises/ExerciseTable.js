@@ -6,8 +6,8 @@ import {AppContext} from "../../context/AppContext";
 import {Exercise} from "./Exercise";
 
 export const ExerciseTable = () => {
-    const {appData, addExercise} = React.useContext(AppContext);
-    let exerciseList = appData?.activeWorkout?.exercises?.exerciseList || {};
+    const {addExercise, activeWorkoutId, workoutList} = React.useContext(AppContext);
+    let exerciseList = workoutList[activeWorkoutId]?.exercises?.exerciseList || {};
     return (
         <>
             <TableContainer>
