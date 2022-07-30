@@ -6,6 +6,9 @@ export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
     const [appData, setAppData] = useState(JSON.parse(localStorage.getItem("appData")) || initialState);
+    const [openExerciseManagementModal, setOpenExerciseManagementModal] = useState(true);
+    const [uniqueExercises, setUniqueExercises] = useState(JSON.parse(localStorage.getItem("uniqueExercises")) || []);
+
 
     const saveState = () => {
         localStorage.setItem("appData", JSON.stringify(appData));
@@ -77,10 +80,10 @@ export const AppContextProvider = (props) => {
         )
     }
 
-    const updateExercise = (exerciseId, field, value) => {
+    const updateExercise = (exerciseId, field, value, workoutId=null) => {
         setAppData(
             produce((draft) => {
-                draft.workouts.workoutList[draft.activeWorkoutId].exercises.exerciseList[exerciseId][field] = value;
+                draft.workouts.workoutList[workoutId || draft.activeWorkoutId].exercises.exerciseList[exerciseId][field] = value;
             })
         )
     }
@@ -115,6 +118,8 @@ export const AppContextProvider = (props) => {
         appData, setAppData,
         activeWorkoutId: appData.activeWorkoutId,
         workoutList: appData.workouts.workoutList,
+        openExerciseManagementModal, setOpenExerciseManagementModal,
+        uniqueExercises, setUniqueExercises,
         setActiveWorkout, addWorkout, deleteWorkout, updateWorkout, updateActiveWorkout,
         addExercise, deleteExercise, updateExercise,
         addSet, deleteSet, updateSet

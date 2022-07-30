@@ -4,6 +4,7 @@ import {Container, createTheme, CssBaseline, Divider, ThemeProvider} from "@mui/
 import {MenuBar} from "./components/header/MenuBar";
 import {WorkoutLayout} from "./layout/WorkoutLayout";
 import {Footer} from "./components/footer/Footer";
+import {ExerciseManagementModal} from "./components/management/ExerciseManagementModal";
 
 function App() {
     const darkTheme = createTheme({
@@ -47,6 +48,7 @@ function App() {
                     <MenuBar/>
                     <Clock/>
                     <Divider/>
+                    <ExerciseManagementModal/>
                     <WorkoutLayout/>
                     <Footer/>
                 </Container>

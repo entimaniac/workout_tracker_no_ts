@@ -7,9 +7,13 @@ import ListItemText from '@mui/material/ListItemText';
 import {Divider, IconButton} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {WorkoutList} from "../workouts/WorkoutList";
+import {AppContext} from "../../context/AppContext";
 
 export const SideMenu = () => {
     const [open, setOpen] = React.useState(false);
+
+    const {setOpenExerciseManagementModal} = React.useContext(AppContext);
+    const handleOpenExerciseManagement = () => setOpenExerciseManagementModal(true);
 
     const toggleOpen = () => {
         setOpen(!open);
@@ -35,15 +39,14 @@ export const SideMenu = () => {
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <ListItemButton>
-                            <ListItemText primary={"Previous Workouts"}/>
+                        <ListItemButton onClick={handleOpenExerciseManagement}>
+                            <ListItemText primary={"Manage Exercises"}/>
                         </ListItemButton>
                     </ListItem>
                     <Divider/>
                     <WorkoutList/>
+                    <Divider/>
                 </List>
-
-
             </Drawer>
         </>
     );
