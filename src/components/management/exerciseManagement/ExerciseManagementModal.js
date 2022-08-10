@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Dialog, IconButton, ListItem, Slide, TextField, Typography} from "@mui/material";
-import {AppContext} from "../../context/AppContext";
+import {AppContext} from "../../../context/AppContext";
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";

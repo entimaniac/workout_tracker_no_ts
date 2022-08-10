@@ -4,7 +4,9 @@ import {Container, createTheme, CssBaseline, Divider, ThemeProvider} from "@mui/
 import {MenuBar} from "./components/header/MenuBar";
 import {WorkoutLayout} from "./layout/WorkoutLayout";
 import {Footer} from "./components/footer/Footer";
-import {ExerciseManagementModal} from "./components/management/ExerciseManagementModal";
+import {ExerciseManagementModal} from "./components/management/exerciseManagement/ExerciseManagementModal";
+import Box from "@mui/material/Box";
+import {AppDataManagementModal} from "./components/management/appDataManagement/AppDataManagementModal";
 
 function App() {
     const darkTheme = createTheme({
@@ -46,10 +48,13 @@ function App() {
                 <CssBaseline/>
                 <Container disableGutters={true} maxWidth={"xl"}>
                     <MenuBar/>
-                    <Clock/>
-                    <Divider/>
-                    <ExerciseManagementModal/>
-                    <WorkoutLayout/>
+                    <Box sx={{mb:10}}>
+                        <Clock/>
+                        <Divider/>
+                        <ExerciseManagementModal/>
+                        <AppDataManagementModal />
+                        <WorkoutLayout/>
+                    </Box>
                     <Footer/>
                 </Container>
             </ThemeProvider>

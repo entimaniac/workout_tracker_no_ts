@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Paper, TextField} from "@mui/material";
+import {Grid, Paper, TextField, Typography} from "@mui/material";
 import {AppContext} from "../context/AppContext";
 import {ExerciseTable} from "../components/exercises/ExerciseTable";
 
@@ -24,6 +24,9 @@ export const WorkoutLayout = () => {
                                 <TextField sx={{m: 2}} value={workoutList[activeWorkoutId]?.name}
                                            variant="standard"
                                            onChange={updateWorkoutName}/>
+                            </Grid>
+                            <Grid item>
+                                <Typography>{new Date(workoutList[activeWorkoutId]?.dateCreated).toLocaleDateString()}</Typography>
                             </Grid>
                         </Grid>
                         <ExerciseTable/>

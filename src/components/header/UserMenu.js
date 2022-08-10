@@ -5,9 +5,12 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import {AppContext} from "../../context/AppContext";
 
 export const UserMenu = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const {setOpenAppDataManagementModal} = React.useContext(AppContext);
+    const handleOpenAppDataManagement = () => setOpenAppDataManagementModal(true);
 
     const handleOpenUserMenu = (e) => {
         setAnchorElUser(e.currentTarget);
@@ -40,8 +43,8 @@ export const UserMenu = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">stuff</Typography>
+                <MenuItem onClick={handleOpenAppDataManagement}>
+                    <Typography textAlign="center">Manage Data</Typography>
                 </MenuItem>
             </Menu>
         </>
