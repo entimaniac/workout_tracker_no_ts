@@ -2,9 +2,7 @@ export const findUniqueExercises = (allExerciseList) => {
     if (!allExerciseList) {
         return new Set()
     }
-    console.log(allExerciseList)
-    let unique = [...new Set(allExerciseList?.map(item => item.name))]
-    return unique;
+    return [...new Set(allExerciseList?.map(item => item.name))];
 }
 
 
