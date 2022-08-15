@@ -4,6 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import {AppContext} from "../../context/AppContext";
 import {DeleteConfirm} from "../shared/input/DeleteConfirm";
+import {getDateString} from "../../utils/DateUtils";
 
 export const WorkoutList = () => {
     const {workoutList, deleteWorkout, setActiveWorkout} = React.useContext(AppContext);
@@ -17,7 +18,7 @@ export const WorkoutList = () => {
             {Object.values(workoutList)?.map((workout) => (
                 <ListItem key={workout.id}>
                     <ListItemButton onClick={() => setActiveWorkout(workout.id)}>
-                        <ListItemText primary={workout.name}/>
+                        <ListItemText primary={getDateString(workout.dateCreated)}/>
                     </ListItemButton>
                     <DeleteConfirm onClick={() => handleDelete(workout.id)}/>
                 </ListItem>
