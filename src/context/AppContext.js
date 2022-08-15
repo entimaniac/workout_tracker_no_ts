@@ -7,7 +7,7 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
     const [appData, setAppData] = useState(JSON.parse(localStorage.getItem("appData")) || initialState);
     const [openExerciseManagementModal, setOpenExerciseManagementModal] = useState(false);
-    const [openAppDataManagementModal, setOpenAppDataManagementModal] = useState(true);
+    const [openAppDataManagementModal, setOpenAppDataManagementModal] = useState(false);
     const [uniqueExercises, setUniqueExercises] = useState(JSON.parse(localStorage.getItem("uniqueExercises")) || []);
 
 
