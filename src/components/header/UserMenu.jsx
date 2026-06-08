@@ -6,6 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import {AppContext} from "../../context/AppContext";
+import faceImage from "./face.jpg";
 
 export const UserMenu = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -24,7 +25,7 @@ export const UserMenu = () => {
         <>
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                    <Avatar src={require('./face.jpg')}/>
+                    <Avatar src={faceImage}/>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -44,7 +45,7 @@ export const UserMenu = () => {
                 onClose={handleCloseUserMenu}
             >
                 <MenuItem onClick={handleOpenAppDataManagement}>
-                    <Typography textAlign="center">Manage Data</Typography>
+                    <Typography sx={{ textAlign: "center" }}>Manage Data</Typography>
                 </MenuItem>
             </Menu>
         </>

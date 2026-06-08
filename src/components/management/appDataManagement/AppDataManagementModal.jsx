@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const AppDataManagementModal = () => {
-    const {openAppDataManagementModal, setOpenAppDataManagementModal, appData, setAppData} = React.useContext(AppContext);
+    const {openAppDataManagementModal, setOpenAppDataManagementModal, setAppData} = React.useContext(AppContext);
     const [uploadData, setUploadData] = useState(null);
 
     const [open, setOpen] = React.useState(false);
@@ -36,7 +36,6 @@ export const AppDataManagementModal = () => {
     };
 
 
-    const handleOpen = () => setOpenAppDataManagementModal(true);
     const handleClose = () => setOpenAppDataManagementModal(false);
 
 
@@ -111,4 +110,3 @@ export const AppDataManagementModal = () => {
         </>
     );
 }
-

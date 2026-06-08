@@ -1,22 +1,37 @@
-import React, {createContext, useEffect, useState} from "react";
-import produce from "immer"
-import {createNewExercise, createNewSet, createNewWorkout, initialState} from "./ContextUtils";
+import React, { createContext, useEffect, useState } from "react";
+import { produce } from "immer";
+import {
+  createNewExercise,
+  createNewSet,
+  createNewWorkout,
+  initialState,
+} from "./ContextUtils";
 
 export const AppContext = createContext();
 
-export const AppContextProvider = (props) => {
-    const [appData, setAppData] = useState(JSON.parse(localStorage.getItem("appData")) || initialState);
-    const [openExerciseManagementModal, setOpenExerciseManagementModal] = useState(false);
-    const [openAppDataManagementModal, setOpenAppDataManagementModal] = useState(false);
-    const [uniqueExercises, setUniqueExercises] = useState(JSON.parse(localStorage.getItem("uniqueExercises")) || []);
+const loadStoredValue = (key, fallback) => {
+    const rawValue = localStorage.getItem(key);
 
-
-    const saveState = () => {
-        localStorage.setItem("appData", JSON.stringify(appData));
+    if (!rawValue) {
+        return fallback;
     }
 
+    try {
+        return JSON.parse(rawValue);
+    } catch (error) {
+        console.error(`Unable to parse stored value for ${key}.`, error);
+        return fallback;
+    }
+}
+
+export const AppContextProvider = ({ children }) => {
+    const [appData, setAppData] = useState(() => loadStoredValue("appData", initialState()));
+    const [openExerciseManagementModal, setOpenExerciseManagementModal] = useState(false);
+    const [openAppDataManagementModal, setOpenAppDataManagementModal] = useState(false);
+    const [uniqueExercises, setUniqueExercises] = useState(() => loadStoredValue("uniqueExercises", []));
+
     useEffect(() => {
-        saveState()
+        localStorage.setItem("appData", JSON.stringify(appData));
     }, [appData]);
 
 
@@ -61,7 +76,6 @@ export const AppContextProvider = (props) => {
                 draft.workouts.workoutList[draft.activeWorkoutId][field] = value;
             })
         )
-        updateWorkout(appData.activeWorkoutId, field, value);
     }
 
     const addExercise = () => {
@@ -129,7 +143,7 @@ export const AppContextProvider = (props) => {
 
     return (
         <AppContext.Provider value={contextValue}>
-            {props.children}
+            {children}
         </AppContext.Provider>
     )
 }

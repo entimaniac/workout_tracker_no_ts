@@ -40,14 +40,13 @@ export const ExerciseManagementModal = () => {
     const [allExercises, setAllExercises] = useState(extractExercises(appData) || []);
     const [uniqueExercises, setUniqueExercises] = useState(findUniqueExercises(allExercises) || []);
 
-    const handleOpen = () => setOpenExerciseManagementModal(true);
     const handleClose = () => setOpenExerciseManagementModal(false);
 
     useEffect(() => {
         if (openExerciseManagementModal) {
             setAllExercises(extractExercises(appData))
         }
-    }, [openExerciseManagementModal]);
+    }, [appData, openExerciseManagementModal]);
 
     useEffect(() => {
         setUniqueExercises(findUniqueExercises(allExercises))
@@ -106,4 +105,3 @@ export const ExerciseManagementModal = () => {
         </>
     );
 }
-

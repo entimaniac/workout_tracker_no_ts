@@ -17,15 +17,14 @@ export const WorkoutLayout = () => {
                     <>
                         <Grid
                             container
-                            alignItems="center"
-                            justifyContent="center"
+                            sx={{alignItems: "center", justifyContent: "center"}}
                         >
-                            <Grid item>
+                            <Grid>
                                 <TextField sx={{m: 2}} value={workoutList[activeWorkoutId]?.name}
                                            variant="standard"
                                            onChange={updateWorkoutName}/>
                             </Grid>
-                            <Grid item>
+                            <Grid>
                                 <Typography>{new Date(workoutList[activeWorkoutId]?.dateCreated).toLocaleDateString()}</Typography>
                             </Grid>
                         </Grid>
@@ -36,4 +35,3 @@ export const WorkoutLayout = () => {
         </>
     );
 }
-

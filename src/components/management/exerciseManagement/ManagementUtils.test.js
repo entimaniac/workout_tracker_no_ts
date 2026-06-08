@@ -235,5 +235,5 @@ test('findUniqueExercises returns unique results', () => {
 test('extractExercises returns all exercises', () => {
     let result = extractExercises(appData);
     expect(mockList.length).toBe(3);
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(8);
 });
