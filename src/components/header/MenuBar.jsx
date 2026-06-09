@@ -10,7 +10,8 @@ import {Logo} from "./Logo";
 import { useAppData } from "../../context/AppDataContext";
 
 export const MenuBar = () => {
-    const {addWorkout} = useAppData();
+    const {addWorkout, activeWorkout} = useAppData();
+    const nextWeekKey = activeWorkout?.weekKey || "5s";
 
     return (
         <AppBar position="static">
@@ -20,10 +21,16 @@ export const MenuBar = () => {
                     <Logo/>
                     <Box sx={{flexGrow: 1, display: 'flex' , justifyContent:"center"}}>
                         <Button
-                            onClick={addWorkout}
-                            sx={{my: 2, color: 'green', display: 'block'}}
+                            onClick={() => addWorkout("split1", nextWeekKey)}
+                            sx={{my: 2, color: 'inherit', display: 'block'}}
                         >
-                            New Workout
+                            New Split 1
+                        </Button>
+                        <Button
+                            onClick={() => addWorkout("split2", nextWeekKey)}
+                            sx={{my: 2, color: 'inherit', display: 'block'}}
+                        >
+                            New Split 2
                         </Button>
                     </Box>
                     <UserMenu/>

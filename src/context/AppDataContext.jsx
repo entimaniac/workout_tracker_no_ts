@@ -1,10 +1,21 @@
 import React, { createContext, useContext } from "react";
 import { produce } from "immer";
 import {
-  createNewExercise,
-  createNewSet,
+  DEFAULT_SPLIT_ID,
+  DEFAULT_WEEK_KEY,
+  LIFT_ORDER,
+  SPLIT_DEFINITIONS,
+  WEEK_DEFINITIONS,
+  WEEK_ORDER,
+  createAccessoryExercise,
+  createAccessorySet,
+  createMaxLogEntry,
   createNewWorkout,
+  formatWeight,
+  getAccessoryExercises,
+  getMainExercises,
   initialState,
+  rebuildMainExercises,
 } from "./ContextUtils";
 import { usePersistentState } from "./usePersistentState";
 
@@ -21,10 +32,18 @@ export const AppDataProvider = ({ children }) => {
     );
   };
 
-  const addWorkout = () => {
+  const addWorkout = (
+    splitId = DEFAULT_SPLIT_ID,
+    weekKey = DEFAULT_WEEK_KEY
+  ) => {
     setAppData(
       produce((draft) => {
-        const workout = createNewWorkout();
+        const workout = createNewWorkout({
+          splitId,
+          weekKey,
+          liftProfiles: draft.liftProfiles,
+        });
+
         draft.workouts.workoutList[workout.id] = workout;
         draft.activeWorkoutId = workout.id;
       })
@@ -39,7 +58,12 @@ export const AppDataProvider = ({ children }) => {
         const remainingWorkoutIds = Object.keys(draft.workouts.workoutList);
 
         if (remainingWorkoutIds.length === 0) {
-          const workout = createNewWorkout();
+          const workout = createNewWorkout({
+            splitId: DEFAULT_SPLIT_ID,
+            weekKey: DEFAULT_WEEK_KEY,
+            liftProfiles: draft.liftProfiles,
+          });
+
           draft.workouts.workoutList[workout.id] = workout;
           draft.activeWorkoutId = workout.id;
           return;
@@ -60,10 +84,24 @@ export const AppDataProvider = ({ children }) => {
     );
   };
 
-  const addExercise = () => {
+  const updateWorkoutWeek = (workoutId, weekKey) => {
     setAppData(
       produce((draft) => {
-        const exercise = createNewExercise();
+        const workout = draft.workouts.workoutList[workoutId];
+
+        draft.workouts.workoutList[workoutId] = rebuildMainExercises(
+          workout,
+          draft.liftProfiles,
+          weekKey
+        );
+      })
+    );
+  };
+
+  const addExercise = (name = "New Accessory") => {
+    setAppData(
+      produce((draft) => {
+        const exercise = createAccessoryExercise(name);
         draft.workouts.workoutList[draft.activeWorkoutId].exercises.exerciseList[
           exercise.id
         ] = exercise;
@@ -74,8 +112,16 @@ export const AppDataProvider = ({ children }) => {
   const deleteExercise = (exerciseId) => {
     setAppData(
       produce((draft) => {
-        delete draft.workouts.workoutList[draft.activeWorkoutId].exercises
-          .exerciseList[exerciseId];
+        const workout =
+          draft.workouts.workoutList[draft.activeWorkoutId].exercises
+            .exerciseList;
+        const exercise = workout[exerciseId];
+
+        if (!exercise || exercise.type === "main") {
+          return;
+        }
+
+        delete workout[exerciseId];
       })
     );
   };
@@ -83,9 +129,17 @@ export const AppDataProvider = ({ children }) => {
   const updateExercise = (exerciseId, field, value, workoutId = null) => {
     setAppData(
       produce((draft) => {
-        draft.workouts.workoutList[
-          workoutId || draft.activeWorkoutId
-        ].exercises.exerciseList[exerciseId][field] = value;
+        const targetWorkoutId = workoutId || draft.activeWorkoutId;
+        const exercise =
+          draft.workouts.workoutList[targetWorkoutId].exercises.exerciseList[
+            exerciseId
+          ];
+
+        if (!exercise || exercise.type === "main") {
+          return;
+        }
+
+        exercise[field] = value;
       })
     );
   };
@@ -93,10 +147,16 @@ export const AppDataProvider = ({ children }) => {
   const addSet = (exerciseId) => {
     setAppData(
       produce((draft) => {
-        const set = createNewSet();
-        draft.workouts.workoutList[draft.activeWorkoutId].exercises.exerciseList[
-          exerciseId
-        ].sets.setList[set.id] = set;
+        const exercise =
+          draft.workouts.workoutList[draft.activeWorkoutId].exercises
+            .exerciseList[exerciseId];
+
+        if (!exercise || exercise.type === "main") {
+          return;
+        }
+
+        const set = createAccessorySet();
+        exercise.sets.setList[set.id] = set;
       })
     );
   };
@@ -104,8 +164,15 @@ export const AppDataProvider = ({ children }) => {
   const deleteSet = (exerciseId, setId) => {
     setAppData(
       produce((draft) => {
-        delete draft.workouts.workoutList[draft.activeWorkoutId].exercises
-          .exerciseList[exerciseId].sets.setList[setId];
+        const exercise =
+          draft.workouts.workoutList[draft.activeWorkoutId].exercises
+            .exerciseList[exerciseId];
+
+        if (!exercise || exercise.type === "main") {
+          return;
+        }
+
+        delete exercise.sets.setList[setId];
       })
     );
   };
@@ -113,28 +180,71 @@ export const AppDataProvider = ({ children }) => {
   const updateSet = (exerciseId, setId, field, value) => {
     setAppData(
       produce((draft) => {
-        draft.workouts.workoutList[draft.activeWorkoutId].exercises.exerciseList[
-          exerciseId
-        ].sets.setList[setId][field] = value;
+        const exercise =
+          draft.workouts.workoutList[draft.activeWorkoutId].exercises
+            .exerciseList[exerciseId];
+
+        if (!exercise) {
+          return;
+        }
+
+        exercise.sets.setList[setId][field] = value;
       })
     );
   };
+
+  const updateLiftMax = (liftId, oneRepMax) => {
+    const parsedMax = Number(oneRepMax);
+
+    if (!Number.isFinite(parsedMax) || parsedMax <= 0) {
+      return;
+    }
+
+    setAppData(
+      produce((draft) => {
+        const liftProfile = draft.liftProfiles[liftId];
+
+        if (!liftProfile || liftProfile.oneRepMax === parsedMax) {
+          return;
+        }
+
+        liftProfile.oneRepMax = parsedMax;
+        liftProfile.log.push(createMaxLogEntry(parsedMax));
+      })
+    );
+  };
+
+  const workoutList = appData.workouts.workoutList;
+  const activeWorkout = workoutList[appData.activeWorkoutId];
+  const mainExercises = getMainExercises(activeWorkout);
+  const accessoryExercises = getAccessoryExercises(activeWorkout);
 
   const contextValue = {
     appData,
     setAppData,
     activeWorkoutId: appData.activeWorkoutId,
-    workoutList: appData.workouts.workoutList,
+    activeWorkout,
+    workoutList,
+    liftProfiles: appData.liftProfiles,
+    mainExercises,
+    accessoryExercises,
+    splitDefinitions: SPLIT_DEFINITIONS,
+    weekDefinitions: WEEK_DEFINITIONS,
+    weekOrder: WEEK_ORDER,
+    liftOrder: LIFT_ORDER,
     setActiveWorkout,
     addWorkout,
     deleteWorkout,
     updateWorkout,
+    updateWorkoutWeek,
     addExercise,
     deleteExercise,
     updateExercise,
     addSet,
     deleteSet,
     updateSet,
+    updateLiftMax,
+    formatWeight,
   };
 
   return (

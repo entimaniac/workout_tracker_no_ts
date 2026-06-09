@@ -1,15 +1,18 @@
 import React, {Fragment} from 'react';
-import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {SetsTable} from "../sets/SetsTable";
 import {Exercise} from "./Exercise";
 import { useAppData } from "../../context/AppDataContext";
 
 export const ExerciseTable = () => {
-    const {addExercise, activeWorkoutId, workoutList} = useAppData();
-    let exerciseList = workoutList[activeWorkoutId]?.exercises?.exerciseList || {};
+    const {addExercise, accessoryExercises} = useAppData();
+
     return (
         <>
+            <Typography sx={{mb: 2}} variant="h4">
+                Accessory Work
+            </Typography>
             <TableContainer>
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
@@ -20,7 +23,7 @@ export const ExerciseTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Object.values(exerciseList)?.map((exercise) => (
+                        {accessoryExercises.map((exercise) => (
                             <Fragment key={exercise.id}>
                                 <Exercise exercise={exercise}/>
                                 <SetsTable exercise={exercise}/>
@@ -30,9 +33,9 @@ export const ExerciseTable = () => {
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell colSpan={5} align={"center"}>
-                                <IconButton onClick={addExercise}>
-                                    <AddIcon/>
-                                </IconButton>
+                                <Button onClick={() => addExercise()} startIcon={<AddIcon />}>
+                                    Add Accessory Exercise
+                                </Button>
                             </TableCell>
                         </TableRow>
                     </TableBody>

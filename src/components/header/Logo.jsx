@@ -19,7 +19,7 @@ export const Logo = () => {
                     textDecoration: 'none',
                 }}
             >
-                LIFT
+                5/3/1
             </Typography>
         </>
     );

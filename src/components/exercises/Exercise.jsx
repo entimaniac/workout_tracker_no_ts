@@ -26,7 +26,12 @@ export const Exercise = ({exercise}) => {
         <>
             <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                 <TableCell>
-                    <TextField value={exercise.name} variant="standard" onChange={updateName}/>
+                    <TextField
+                        label="Accessory"
+                        value={exercise.name}
+                        variant="standard"
+                        onChange={updateName}
+                    />
                 </TableCell>
                 <TableCell>{calculateTotalReps(exercise.sets)}</TableCell>
                 <TableCell>{calculateTotalWeight(exercise.sets)}</TableCell>

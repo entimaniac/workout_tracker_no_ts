@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import {Divider, IconButton} from "@mui/material";
+import {Divider, IconButton, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {WorkoutList} from "../workouts/WorkoutList";
 import { useUiState } from "../../context/UiContext";
@@ -29,18 +29,18 @@ export const SideMenu = () => {
                 onClose={toggleOpen}
             >
                 <List>
-                    <ListItem>
-                        <ListItemText primary={"Hii"}/>
+                    <ListItem sx={{px: 2, pt: 2}}>
+                        <Typography variant="h6">5/3/1 Planner</Typography>
                     </ListItem>
                     <Divider/>
                     <ListItem>
                         <ListItemButton>
-                            <ListItemText primary={"Calendar"}/>
+                            <ListItemText primary={"Sessions"} secondary={"Switch between split days"} />
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
                         <ListItemButton onClick={handleOpenExerciseManagement}>
-                            <ListItemText primary={"Manage Exercises"}/>
+                            <ListItemText primary={"Manage Main Lift Maxes"}/>
                         </ListItemButton>
                     </ListItem>
                     <Divider/>

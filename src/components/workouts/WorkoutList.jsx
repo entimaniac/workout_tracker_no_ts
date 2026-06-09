@@ -7,7 +7,7 @@ import {getDateString} from "../../utils/DateUtils";
 import { useAppData } from "../../context/AppDataContext";
 
 export const WorkoutList = () => {
-    const {workoutList, deleteWorkout, setActiveWorkout} = useAppData();
+    const {workoutList, splitDefinitions, deleteWorkout, setActiveWorkout} = useAppData();
 
     const handleDelete = (workoutId) => {
         deleteWorkout(workoutId)
@@ -18,7 +18,10 @@ export const WorkoutList = () => {
             {Object.values(workoutList)?.map((workout) => (
                 <ListItem key={workout.id}>
                     <ListItemButton onClick={() => setActiveWorkout(workout.id)}>
-                        <ListItemText primary={getDateString(workout.dateCreated)}/>
+                        <ListItemText
+                            primary={workout.name}
+                            secondary={`${splitDefinitions[workout.splitId]?.description} • ${getDateString(workout.dateCreated)}`}
+                        />
                     </ListItemButton>
                     <DeleteConfirm onClick={() => handleDelete(workout.id)}/>
                 </ListItem>

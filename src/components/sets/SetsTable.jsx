@@ -1,5 +1,5 @@
 import React from 'react';
-import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {Set} from "./Set";
 import { useAppData } from "../../context/AppDataContext";
@@ -36,9 +36,9 @@ export const SetsTable = ({exercise}) => {
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
                                     <TableCell colSpan={5} align={"center"}>
-                                        <IconButton onClick={() => addSet(exercise.id)}>
-                                            <AddIcon/>
-                                        </IconButton>
+                                        <Button onClick={() => addSet(exercise.id)} startIcon={<AddIcon />}>
+                                            Add Set
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
