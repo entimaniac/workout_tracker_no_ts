@@ -7,12 +7,12 @@ import ListItemText from '@mui/material/ListItemText';
 import {Divider, IconButton} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {WorkoutList} from "../workouts/WorkoutList";
-import {AppContext} from "../../context/AppContext";
+import { useUiState } from "../../context/UiContext";
 
 export const SideMenu = () => {
     const [open, setOpen] = React.useState(false);
 
-    const {setOpenExerciseManagementModal} = React.useContext(AppContext);
+    const {setOpenExerciseManagementModal} = useUiState();
     const handleOpenExerciseManagement = () => setOpenExerciseManagementModal(true);
 
     const toggleOpen = () => {

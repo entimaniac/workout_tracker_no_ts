@@ -7,10 +7,10 @@ import Button from '@mui/material/Button';
 import {SideMenu} from "./SideMenu";
 import {UserMenu} from "./UserMenu";
 import {Logo} from "./Logo";
-import {AppContext} from "../../context/AppContext";
+import { useAppData } from "../../context/AppDataContext";
 
 export const MenuBar = () => {
-    const {addWorkout} = React.useContext(AppContext);
+    const {addWorkout} = useAppData();
 
     return (
         <AppBar position="static">

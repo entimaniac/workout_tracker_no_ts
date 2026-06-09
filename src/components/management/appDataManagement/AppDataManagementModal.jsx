@@ -9,20 +9,22 @@ import {
     Slide,
     Typography
 } from "@mui/material";
-import {AppContext} from "../../../context/AppContext";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import CloseIcon from '@mui/icons-material/Close';
 import {DownloadData} from "./DownloadData";
 import {UploadData} from "./UploadData";
 import Button from "@mui/material/Button";
+import { useAppData } from "../../../context/AppDataContext";
+import { useUiState } from "../../../context/UiContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
 export const AppDataManagementModal = () => {
-    const {openAppDataManagementModal, setOpenAppDataManagementModal, setAppData} = React.useContext(AppContext);
+    const { setAppData } = useAppData();
+    const {openAppDataManagementModal, setOpenAppDataManagementModal} = useUiState();
     const [uploadData, setUploadData] = useState(null);
 
     const [open, setOpen] = React.useState(false);

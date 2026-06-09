@@ -2,12 +2,12 @@ import * as React from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import {AppContext} from "../../context/AppContext";
 import {DeleteConfirm} from "../shared/input/DeleteConfirm";
 import {getDateString} from "../../utils/DateUtils";
+import { useAppData } from "../../context/AppDataContext";
 
 export const WorkoutList = () => {
-    const {workoutList, deleteWorkout, setActiveWorkout} = React.useContext(AppContext);
+    const {workoutList, deleteWorkout, setActiveWorkout} = useAppData();
 
     const handleDelete = (workoutId) => {
         deleteWorkout(workoutId)

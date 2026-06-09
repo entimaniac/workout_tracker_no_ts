@@ -2,11 +2,11 @@ import React, {Fragment} from 'react';
 import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {SetsTable} from "../sets/SetsTable";
-import {AppContext} from "../../context/AppContext";
 import {Exercise} from "./Exercise";
+import { useAppData } from "../../context/AppDataContext";
 
 export const ExerciseTable = () => {
-    const {addExercise, activeWorkoutId, workoutList} = React.useContext(AppContext);
+    const {addExercise, activeWorkoutId, workoutList} = useAppData();
     let exerciseList = workoutList[activeWorkoutId]?.exercises?.exerciseList || {};
     return (
         <>
@@ -41,4 +41,3 @@ export const ExerciseTable = () => {
         </>
     );
 }
-

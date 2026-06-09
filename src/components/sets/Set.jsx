@@ -1,10 +1,10 @@
 import React from 'react';
 import {TableCell, TableRow, TextField} from "@mui/material";
-import {AppContext} from "../../context/AppContext";
 import {DeleteConfirm} from "../shared/input/DeleteConfirm";
+import { useAppData } from "../../context/AppDataContext";
 
 export const Set = ({rowId, set}) => {
-    const {updateSet, deleteSet} = React.useContext(AppContext);
+    const {updateSet, deleteSet} = useAppData();
 
     const updateReps = (event) => {
         updateSet(rowId, set.id, "reps", event.target.value)
@@ -35,4 +35,3 @@ export const Set = ({rowId, set}) => {
         </>
     );
 }
-

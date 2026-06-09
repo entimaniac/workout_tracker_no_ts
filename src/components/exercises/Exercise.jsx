@@ -1,10 +1,10 @@
 import React from 'react';
 import {TableCell, TableRow, TextField} from "@mui/material";
-import {AppContext} from "../../context/AppContext";
 import {DeleteConfirm} from "../shared/input/DeleteConfirm";
+import { useAppData } from "../../context/AppDataContext";
 
 export const Exercise = ({exercise}) => {
-    const {updateExercise, deleteExercise} = React.useContext(AppContext);
+    const {updateExercise, deleteExercise} = useAppData();
 
     const updateName = (event) => {
         updateExercise(exercise.id, "name", event.target.value)
@@ -37,4 +37,3 @@ export const Exercise = ({exercise}) => {
         </>
     );
 }
-

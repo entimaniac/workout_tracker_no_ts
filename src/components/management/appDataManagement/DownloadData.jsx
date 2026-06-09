@@ -1,9 +1,8 @@
 import Button from "@mui/material/Button";
-import {AppContext} from "../../../context/AppContext";
-import {useContext} from "react";
+import { useAppData } from "../../../context/AppDataContext";
 
 export const DownloadData = () => {
-    const { appData } = useContext(AppContext);
+    const { appData } = useAppData();
 
     const downloadFile = () => {
 

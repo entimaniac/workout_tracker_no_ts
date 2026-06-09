@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Dialog, IconButton, ListItem, Slide, TextField, Typography} from "@mui/material";
-import {AppContext} from "../../../context/AppContext";
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import CloseIcon from '@mui/icons-material/Close';
 import List from "@mui/material/List";
 import {extractExercises, findUniqueExercises} from "./ManagementUtils";
+import { useAppData } from "../../../context/AppDataContext";
+import { useUiState } from "../../../context/UiContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />;
@@ -36,7 +37,8 @@ const UniqueInput = ({originalName, update}) => {
 };
 
 export const ExerciseManagementModal = () => {
-    const {openExerciseManagementModal, setOpenExerciseManagementModal, appData, updateExercise} = React.useContext(AppContext);
+    const {appData, updateExercise} = useAppData();
+    const {openExerciseManagementModal, setOpenExerciseManagementModal} = useUiState();
     const [allExercises, setAllExercises] = useState(extractExercises(appData) || []);
     const [uniqueExercises, setUniqueExercises] = useState(findUniqueExercises(allExercises) || []);
 

@@ -5,12 +5,12 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import {AppContext} from "../../context/AppContext";
 import faceImage from "./face.jpg";
+import { useUiState } from "../../context/UiContext";
 
 export const UserMenu = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const {setOpenAppDataManagementModal} = React.useContext(AppContext);
+    const {setOpenAppDataManagementModal} = useUiState();
     const handleOpenAppDataManagement = () => setOpenAppDataManagementModal(true);
 
     const handleOpenUserMenu = (e) => {

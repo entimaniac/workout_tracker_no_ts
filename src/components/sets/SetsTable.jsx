@@ -1,11 +1,11 @@
 import React from 'react';
 import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import {AppContext} from "../../context/AppContext";
 import {Set} from "./Set";
+import { useAppData } from "../../context/AppDataContext";
 
 export const SetsTable = ({exercise}) => {
-    const {addSet} = React.useContext(AppContext);
+    const {addSet} = useAppData();
     const setList = exercise?.sets?.setList;
 
     return (
@@ -29,8 +29,8 @@ export const SetsTable = ({exercise}) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {Object.values(setList).map((s, index) => (
-                                    <Set key={index} set={s} rowId={exercise.id} />
+                                {Object.values(setList).map((s) => (
+                                    <Set key={s.id} set={s} rowId={exercise.id} />
                                 ))}
                                 <TableRow
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -49,4 +49,3 @@ export const SetsTable = ({exercise}) => {
         </>
     );
 }
-
