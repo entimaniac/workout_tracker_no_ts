@@ -4,9 +4,11 @@ import AddIcon from '@mui/icons-material/Add';
 import {SetsTable} from "../sets/SetsTable";
 import {Exercise} from "./Exercise";
 import { useAppData } from "../../context/AppDataContext";
+import { useUiState } from "../../context/UiContext";
 
 export const ExerciseTable = () => {
-    const {addExercise, accessoryExercises} = useAppData();
+    const {accessoryExercises} = useAppData();
+    const { setOpenAccessoryExerciseModal } = useUiState();
 
     return (
         <>
@@ -33,7 +35,10 @@ export const ExerciseTable = () => {
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell colSpan={5} align={"center"}>
-                                <Button onClick={() => addExercise()} startIcon={<AddIcon />}>
+                                <Button
+                                    onClick={() => setOpenAccessoryExerciseModal(true)}
+                                    startIcon={<AddIcon />}
+                                >
                                     Add Accessory Exercise
                                 </Button>
                             </TableCell>

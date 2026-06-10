@@ -1,9 +1,11 @@
 import React from 'react';
 import {Clock} from "./components/clock/Clock";
+import {LiftSummary} from "./components/clock/LiftSummary";
 import {Container, createTheme, CssBaseline, Divider, ThemeProvider} from "@mui/material";
 import {MenuBar} from "./components/header/MenuBar";
 import {WorkoutLayout} from "./layout/WorkoutLayout";
 import {Footer} from "./components/footer/Footer";
+import {AccessoryExerciseModal} from "./components/management/exerciseManagement/AccessoryExerciseModal";
 import {ExerciseManagementModal} from "./components/management/exerciseManagement/ExerciseManagementModal";
 import Box from "@mui/material/Box";
 import {AppDataManagementModal} from "./components/management/appDataManagement/AppDataManagementModal";
@@ -50,7 +52,9 @@ function App() {
                     <MenuBar/>
                     <Box sx={{mb:10}}>
                         <Clock/>
+                        <LiftSummary/>
                         <Divider/>
+                        <AccessoryExerciseModal/>
                         <ExerciseManagementModal/>
                         <AppDataManagementModal />
                         <WorkoutLayout/>
