@@ -13,5 +13,4 @@
 
 go here to use: https://entimaniac.github.io/workout_tracker_no_ts/
 
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Built with Vite and deployed to GitHub Pages with a GitHub Actions workflow on pushes to `master`.
