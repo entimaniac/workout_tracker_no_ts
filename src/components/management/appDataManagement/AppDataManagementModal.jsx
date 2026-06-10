@@ -61,7 +61,7 @@ export const AppDataManagementModal = () => {
                 fullScreen
                 open={openAppDataManagementModal}
                 onClose={handleClose}
-                TransitionComponent={Transition}
+                slots={{ transition: Transition }}
             >
                 <AppBar sx={{position: 'relative'}}>
                     <Toolbar>

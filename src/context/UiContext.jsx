@@ -7,6 +7,8 @@ export const UiProvider = ({ children }) => {
     useState(false);
   const [openAppDataManagementModal, setOpenAppDataManagementModal] =
     useState(false);
+  const [openAccessoryExerciseModal, setOpenAccessoryExerciseModal] =
+    useState(false);
 
   return (
     <UiContext.Provider
@@ -15,6 +17,8 @@ export const UiProvider = ({ children }) => {
         setOpenExerciseManagementModal,
         openAppDataManagementModal,
         setOpenAppDataManagementModal,
+        openAccessoryExerciseModal,
+        setOpenAccessoryExerciseModal,
       }}
     >
       {children}

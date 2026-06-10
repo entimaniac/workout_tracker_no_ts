@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  Button,
+  Checkbox,
   Box,
   Paper,
   Stack,
@@ -12,13 +14,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { useAppData } from "../../context/AppDataContext";
+import { formatPercentage } from "../../context/ContextUtils";
+import { DeleteConfirm } from "../shared/input/DeleteConfirm";
 
 const MainLiftCard = ({ exercise }) => {
-  const { updateSet, formatWeight } = useAppData();
+  const { addSet, updateSet, deleteSet, toggleSetComplete, formatWeight } =
+    useAppData();
 
   const handleUpdateSet = (setId, field, value) => {
     updateSet(exercise.id, setId, field, value);
+  };
+
+  const handleToggleComplete = (setId) => {
+    toggleSetComplete(exercise.id, setId);
+  };
+
+  const handleDeleteSet = (setId) => {
+    deleteSet(exercise.id, setId);
   };
 
   return (
@@ -46,19 +60,33 @@ const MainLiftCard = ({ exercise }) => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Done</TableCell>
               <TableCell>%</TableCell>
               <TableCell>Target</TableCell>
               <TableCell>Reps</TableCell>
               <TableCell>Weight (lb)</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {Object.values(exercise.sets.setList).map((set) => (
-              <TableRow key={set.id}>
-                <TableCell>{set.percentage}%</TableCell>
-                <TableCell>{set.prescribedReps}</TableCell>
+              <TableRow
+                key={set.id}
+                sx={{
+                  opacity: set.isComplete ? 0.7 : 1,
+                }}
+              >
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={Boolean(set.isComplete)}
+                    onChange={() => handleToggleComplete(set.id)}
+                  />
+                </TableCell>
+                <TableCell>{formatPercentage(set.percentage)}</TableCell>
+                <TableCell>{set.prescribedReps || "-"}</TableCell>
                 <TableCell>
                   <TextField
+                    disabled={set.isComplete}
                     value={set.reps}
                     variant="standard"
                     type="number"
@@ -69,6 +97,7 @@ const MainLiftCard = ({ exercise }) => {
                 </TableCell>
                 <TableCell>
                   <TextField
+                    disabled={set.isComplete}
                     value={set.weight}
                     variant="standard"
                     type="number"
@@ -77,8 +106,20 @@ const MainLiftCard = ({ exercise }) => {
                     }
                   />
                 </TableCell>
+                <TableCell>
+                  {set.isExtra ? (
+                    <DeleteConfirm onClick={() => handleDeleteSet(set.id)} />
+                  ) : null}
+                </TableCell>
               </TableRow>
             ))}
+            <TableRow>
+              <TableCell colSpan={6} align="center">
+                <Button onClick={() => addSet(exercise.id)} startIcon={<AddIcon />}>
+                  Add Set
+                </Button>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

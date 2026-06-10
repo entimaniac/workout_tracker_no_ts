@@ -6,7 +6,9 @@ export const Clock = () => {
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
-        setInterval(() => setTime(new Date()), 10);
+        const intervalId = setInterval(() => setTime(new Date()), 10);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return (
@@ -26,8 +28,12 @@ export const Clock = () => {
                     <Typography variant={"h1"}> : </Typography>
                 </Grid>
                 <Grid size={2}>
-                    <Typography color={getColor(time)}
-                                variant={"h1"}> {time.getSeconds().toString().padStart(2, '0')} </Typography>
+                    <Typography
+                        sx={{color: getColor(time)}}
+                        variant={"h1"}
+                    >
+                        {time.getSeconds().toString().padStart(2, '0')}
+                    </Typography>
                 </Grid>
                 <Grid size={1}>
                     <Typography variant={"h1"}> : </Typography>

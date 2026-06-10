@@ -16,6 +16,7 @@ export const SetsTable = ({exercise}) => {
                         <Table sx={{minWidth: 650, backgroundColor:"action.hover"}}>
                             <colgroup>
                                 <col style={{width:'10%'}}/>
+                                <col style={{width:'10%'}}/>
                                 <col style={{width:'20%'}}/>
                                 <col style={{width:'20%'}}/>
                                 <col style={{width:'10%'}}/>
@@ -23,6 +24,7 @@ export const SetsTable = ({exercise}) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell> </TableCell>
+                                    <TableCell>Done</TableCell>
                                     <TableCell>Reps</TableCell>
                                     <TableCell>Weight</TableCell>
                                     <TableCell> </TableCell>

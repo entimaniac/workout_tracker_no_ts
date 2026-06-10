@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { produce } from "immer";
 import {
   DEFAULT_SPLIT_ID,
@@ -8,21 +8,36 @@ import {
   WEEK_DEFINITIONS,
   WEEK_ORDER,
   createAccessoryExercise,
+  createAccessoryLibraryExercise,
+  calculateSetPercentage,
+  createExtraMainSet,
   createAccessorySet,
   createMaxLogEntry,
   createNewWorkout,
+  findAccessoryLibraryExerciseByName,
   formatWeight,
   getAccessoryExercises,
+  getAccessoryLibraryExercises,
   getMainExercises,
+  getSuggestedAccessoryExercises,
   initialState,
+  normalizeAppData,
   rebuildMainExercises,
+  syncMainExerciseWithLiftProfile,
 } from "./ContextUtils";
 import { usePersistentState } from "./usePersistentState";
 
 const AppDataContext = createContext(null);
 
 export const AppDataProvider = ({ children }) => {
-  const [appData, setAppData] = usePersistentState("appData", initialState);
+  const [storedAppData, setAppData] = usePersistentState("appData", initialState);
+  const appData = normalizeAppData(storedAppData);
+
+  useEffect(() => {
+    if (!storedAppData?.exerciseLibrary) {
+      setAppData(appData);
+    }
+  }, [appData, setAppData, storedAppData]);
 
   const setActiveWorkout = (workoutId) => {
     setAppData(
@@ -109,6 +124,55 @@ export const AppDataProvider = ({ children }) => {
     );
   };
 
+  const addExerciseFromLibrary = (exerciseId) => {
+    setAppData(
+      produce((draft) => {
+        draft.exerciseLibrary = draft.exerciseLibrary || appData.exerciseLibrary;
+        const libraryExercise = draft.exerciseLibrary?.exerciseList?.[exerciseId];
+
+        if (!libraryExercise) {
+          return;
+        }
+
+        const exercise = createAccessoryExercise(libraryExercise.name);
+        draft.workouts.workoutList[draft.activeWorkoutId].exercises.exerciseList[
+          exercise.id
+        ] = exercise;
+      })
+    );
+  };
+
+  const createCustomAccessoryExercise = (name) => {
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      return;
+    }
+
+    setAppData(
+      produce((draft) => {
+        draft.exerciseLibrary = draft.exerciseLibrary || appData.exerciseLibrary;
+        const existingLibraryExercise = findAccessoryLibraryExerciseByName(
+          draft.exerciseLibrary,
+          trimmedName
+        );
+
+        const libraryExercise =
+          existingLibraryExercise ||
+          createAccessoryLibraryExercise({
+            name: trimmedName,
+          });
+
+        draft.exerciseLibrary.exerciseList[libraryExercise.id] = libraryExercise;
+
+        const exercise = createAccessoryExercise(libraryExercise.name);
+        draft.workouts.workoutList[draft.activeWorkoutId].exercises.exerciseList[
+          exercise.id
+        ] = exercise;
+      })
+    );
+  };
+
   const deleteExercise = (exerciseId) => {
     setAppData(
       produce((draft) => {
@@ -151,7 +215,20 @@ export const AppDataProvider = ({ children }) => {
           draft.workouts.workoutList[draft.activeWorkoutId].exercises
             .exerciseList[exerciseId];
 
-        if (!exercise || exercise.type === "main") {
+        if (!exercise) {
+          return;
+        }
+
+        if (exercise.type === "main") {
+          const existingSets = Object.values(exercise.sets.setList);
+          const sourceSet = existingSets[existingSets.length - 1];
+
+          if (!sourceSet) {
+            return;
+          }
+
+          const set = createExtraMainSet(sourceSet, exercise.workingMaxSnapshot);
+          exercise.sets.setList[set.id] = set;
           return;
         }
 
@@ -168,7 +245,11 @@ export const AppDataProvider = ({ children }) => {
           draft.workouts.workoutList[draft.activeWorkoutId].exercises
             .exerciseList[exerciseId];
 
-        if (!exercise || exercise.type === "main") {
+        if (!exercise) {
+          return;
+        }
+
+        if (exercise.type === "main" && !exercise.sets.setList[setId]?.isExtra) {
           return;
         }
 
@@ -189,6 +270,29 @@ export const AppDataProvider = ({ children }) => {
         }
 
         exercise.sets.setList[setId][field] = value;
+
+        const set = exercise.sets.setList[setId];
+
+        if (exercise.type === "main" && set?.isExtra && field === "weight") {
+          set.percentage = calculateSetPercentage(value, exercise.workingMaxSnapshot);
+        }
+      })
+    );
+  };
+
+  const toggleSetComplete = (exerciseId, setId) => {
+    setAppData(
+      produce((draft) => {
+        const exercise =
+          draft.workouts.workoutList[draft.activeWorkoutId].exercises
+            .exerciseList[exerciseId];
+
+        if (!exercise?.sets?.setList?.[setId]) {
+          return;
+        }
+
+        exercise.sets.setList[setId].isComplete =
+          !exercise.sets.setList[setId].isComplete;
       })
     );
   };
@@ -210,6 +314,19 @@ export const AppDataProvider = ({ children }) => {
 
         liftProfile.oneRepMax = parsedMax;
         liftProfile.log.push(createMaxLogEntry(parsedMax));
+
+        Object.values(draft.workouts.workoutList).forEach((workout) => {
+          Object.entries(workout.exercises.exerciseList).forEach(
+            ([exerciseId, exercise]) => {
+              if (exercise.type !== "main" || exercise.liftId !== liftId) {
+                return;
+              }
+
+              workout.exercises.exerciseList[exerciseId] =
+                syncMainExerciseWithLiftProfile(exercise, liftProfile);
+            }
+          );
+        });
       })
     );
   };
@@ -218,6 +335,13 @@ export const AppDataProvider = ({ children }) => {
   const activeWorkout = workoutList[appData.activeWorkoutId];
   const mainExercises = getMainExercises(activeWorkout);
   const accessoryExercises = getAccessoryExercises(activeWorkout);
+  const accessoryLibraryExercises = getAccessoryLibraryExercises(
+    appData.exerciseLibrary
+  );
+  const suggestedAccessoryExercises = getSuggestedAccessoryExercises(
+    appData.exerciseLibrary,
+    activeWorkout?.splitId
+  );
 
   const contextValue = {
     appData,
@@ -226,6 +350,8 @@ export const AppDataProvider = ({ children }) => {
     activeWorkout,
     workoutList,
     liftProfiles: appData.liftProfiles,
+    accessoryLibraryExercises,
+    suggestedAccessoryExercises,
     mainExercises,
     accessoryExercises,
     splitDefinitions: SPLIT_DEFINITIONS,
@@ -238,11 +364,14 @@ export const AppDataProvider = ({ children }) => {
     updateWorkout,
     updateWorkoutWeek,
     addExercise,
+    addExerciseFromLibrary,
+    createCustomAccessoryExercise,
     deleteExercise,
     updateExercise,
     addSet,
     deleteSet,
     updateSet,
+    toggleSetComplete,
     updateLiftMax,
     formatWeight,
   };

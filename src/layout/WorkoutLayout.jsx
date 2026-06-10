@@ -47,18 +47,20 @@ export const WorkoutLayout = () => {
                                     select
                                     label="Week"
                                     value={activeWorkout.weekKey}
-                                    SelectProps={{
-                                        renderValue: (selected) => {
-                                            const selectedWeek = weekDefinitions[selected];
+                                    slotProps={{
+                                        select: {
+                                            renderValue: (selected) => {
+                                                const selectedWeek = weekDefinitions[selected];
 
-                                            return (
-                                                <Box sx={{display: "flex", alignItems: "baseline", gap: 1, flexWrap: "wrap"}}>
-                                                    <Typography>{selectedWeek?.name}</Typography>
-                                                    <Typography color="text.secondary" variant="body2">
-                                                        {selectedWeek?.description}
-                                                    </Typography>
-                                                </Box>
-                                            );
+                                                return (
+                                                    <Box sx={{display: "flex", alignItems: "baseline", gap: 1, flexWrap: "wrap"}}>
+                                                        <Typography>{selectedWeek?.name}</Typography>
+                                                        <Typography color="text.secondary" variant="body2">
+                                                            {selectedWeek?.description}
+                                                        </Typography>
+                                                    </Box>
+                                                );
+                                            },
                                         },
                                     }}
                                     onChange={(event) =>
