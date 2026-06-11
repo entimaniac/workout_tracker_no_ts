@@ -15,22 +15,22 @@ export const LIFT_DEFINITIONS = {
   benchPress: {
     id: "benchPress",
     name: "Bench Press",
-    defaultOneRepMax: 185,
+    defaultOneRepMax: 162,
   },
   squat: {
     id: "squat",
     name: "Squat",
-    defaultOneRepMax: 225,
+    defaultOneRepMax: 170,
   },
   deadlift: {
     id: "deadlift",
     name: "Deadlift",
-    defaultOneRepMax: 315,
+    defaultOneRepMax: 213,
   },
   overheadPress: {
     id: "overheadPress",
     name: "Overhead Press",
-    defaultOneRepMax: 115,
+    defaultOneRepMax: 101,
   },
 };
 

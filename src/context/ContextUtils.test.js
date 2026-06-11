@@ -52,9 +52,9 @@ test("createNewWorkout builds split 1 with bench and squat working sets", () => 
     (set) => set.weight
   );
 
-  expect(bench.oneRepMaxSnapshot).toBe(185);
-  expect(bench.workingMaxSnapshot).toBe(166.5);
-  expect(benchSetWeights).toEqual([110, 125, 140]);
+  expect(bench.oneRepMaxSnapshot).toBe(162);
+  expect(bench.workingMaxSnapshot).toBe(145.8);
+  expect(benchSetWeights).toEqual([95, 110, 125]);
 });
 
 test("new sets start incomplete by default", () => {
@@ -84,7 +84,7 @@ test("createExtraMainSet marks added main sets as extra and incomplete", () => {
   expect(extraSet.isExtra).toBe(true);
   expect(extraSet.isComplete).toBe(false);
   expect(extraSet.weight).toBe(sourceSet.weight);
-  expect(extraSet.percentage).toBe(84.1);
+  expect(extraSet.percentage).toBe(85.7);
   expect(extraSet.prescribedReps).toBeNull();
 });
 
@@ -169,7 +169,7 @@ test("syncMainExerciseWithLiftProfile updates only unfinished main sets", () => 
   expect(updatedSets[1].weight).toBe(290);
   expect(updatedSets[2].weight).toBe(330);
   expect(updatedSets[1].isComplete).toBe(false);
-  expect(unfinishedSet.weight).toBe(225);
+  expect(unfinishedSet.weight).toBe(155);
 });
 
 test("syncMainExerciseWithLiftProfile preserves extra set weight and recalculates percentage", () => {
