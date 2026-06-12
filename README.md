@@ -13,4 +13,4 @@
 
 go here to use: https://entimaniac.github.io/workout_tracker_no_ts/
 
-Built with Vite and deployed to GitHub Pages with a GitHub Actions workflow on pushes to `master`.
+Built with Vite and deployed to GitHub Pages with a GitHub Actions workflow on pushes to `main`.
